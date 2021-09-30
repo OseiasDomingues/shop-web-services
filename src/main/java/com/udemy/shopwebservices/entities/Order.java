@@ -30,7 +30,6 @@ public class Order implements Serializable  {
     @Setter(AccessLevel.NONE)
     private Integer orderStatus;
 
-
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User client;
@@ -39,6 +38,9 @@ public class Order implements Serializable  {
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "id.order")
     private Set<OrderItem> items = new HashSet<>();
+
+    @OneToOne(mappedBy = "order",cascade = CascadeType.ALL)
+    private Payment payment;
 
     public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
         this.id = id;
