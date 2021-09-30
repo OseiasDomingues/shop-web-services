@@ -2,7 +2,10 @@ package com.udemy.shopwebservices.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.udemy.shopwebservices.entities.enums.OrderStatus;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +20,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "tb_order")
-public class Order implements Serializable  {
+public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,7 +42,7 @@ public class Order implements Serializable  {
     @OneToMany(mappedBy = "id.order")
     private Set<OrderItem> items = new HashSet<>();
 
-    @OneToOne(mappedBy = "order",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;
 
     public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
@@ -54,13 +57,21 @@ public class Order implements Serializable  {
     }
 
     public void setOrderStatus(OrderStatus orderStatus) {
-        if(orderStatus != null) {
+        if (orderStatus != null) {
             this.orderStatus = orderStatus.getCode();
         }
     }
 
     public Set<OrderItem> getItems() {
         return items;
+    }
+
+    public Double getTotal() {
+        double sum = 0.0;
+        for (OrderItem x : items) {
+            sum += x.getSubTotal();
+        }
+        return sum;
     }
 
     @Override
