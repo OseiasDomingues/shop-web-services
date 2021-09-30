@@ -1,1 +1,1 @@
-web: java -jar -Dserver.port = $ PORT target / shop-web-services.war
+web: java -jar build/libs/shop-web-services-0.0.1-SNAPSHOT.jar
